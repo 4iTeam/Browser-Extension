@@ -1,0 +1,24 @@
+{
+  "appName": {
+    "message": "4IT Community"
+  },
+  "appDescription": {
+    "message": "Extension dành cho 4IT Community"
+  },
+  "removeUser": {
+    "message": "Xóa người dùng khỏi nhóm"
+  },
+  "blockUser": {
+    "message": "Chặn người dùng khỏi nhóm"
+  },
+  "removeNotify": {
+    "message": "Đã xóa người dùng với ID"
+  },
+  "blockNotify": {
+    "message": "Đã chặn người dùng với ID"
+  },
+  "update": {
+    "message": "Cập nhật"
+  }
+
+}
