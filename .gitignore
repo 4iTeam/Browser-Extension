@@ -5,3 +5,5 @@
 /package-lock.json
 /webpack.mix.js
 /.idea
+/build
+/src.pem
