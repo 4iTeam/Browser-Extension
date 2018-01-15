@@ -15,6 +15,7 @@
 	"default_locale": "en",
 	"background": {
 		"scripts": [
+			"scripts/underscore-min.js",
 			"scripts/bg.js"
 		]
 	},

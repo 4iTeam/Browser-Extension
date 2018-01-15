@@ -17,8 +17,8 @@
   "blockNotify": {
     "message": "Đã chặn người dùng với ID"
   },
-  "update": {
-    "message": "Cập nhật"
+  "refresh": {
+    "message": "Làm mới"
   }
 
 }

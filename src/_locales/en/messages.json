@@ -17,7 +17,7 @@
   "blockNotify": {
     "message": "Blocked user ID"
   },
-  "update": {
-    "message": "Update"
+  "refresh": {
+    "message": "Refresh"
   }
 }
