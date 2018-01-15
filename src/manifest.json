@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_appName__",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"manifest_version": 2,
 	"description": "__MSG_appDescription__",
 	"author": "4IT",
@@ -63,6 +63,8 @@
 		"page": "options.html?type=chrome_style"
 	},
 	"web_accessible_resources": [
-		"images/icon-32.png"
+		"images/*",
+		"styles/*",
+		"scripts/*"
 	]
 }
