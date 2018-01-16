@@ -11,11 +11,17 @@
   "blockUser": {
     "message": "Block user from group"
   },
+  "unblockUser": {
+    "message": "Unblock user from group"
+  },
   "removeNotify": {
     "message": "Removed user ID"
   },
   "blockNotify": {
     "message": "Blocked user ID"
+  },
+  "unblockNotify": {
+    "message": "Unblocked user ID"
   },
   "refresh": {
     "message": "Refresh"

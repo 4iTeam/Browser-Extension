@@ -11,11 +11,17 @@
   "blockUser": {
     "message": "Chặn người dùng khỏi nhóm"
   },
+  "unblockUser": {
+    "message": "Bỏ chặn người dùng"
+  },
   "removeNotify": {
     "message": "Đã xóa người dùng với ID"
   },
   "blockNotify": {
     "message": "Đã chặn người dùng với ID"
+  },
+  "unblockNotify": {
+    "message": "Đã bỏ chặn người dùng với ID"
   },
   "refresh": {
     "message": "Làm mới"
