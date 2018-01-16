@@ -1,1 +1,848 @@
-!function(t){var e="object"==typeof self&&self.self===self&&self||"object"==typeof global&&global.global===global&&global;e.GM=function(t,e,n,i){t.GM;e.VERSION="1.3.3";var s=function(t,e,i){switch(t){case 1:return function(){return n[e](this[i])};case 2:return function(t){return n[e](this[i],t)};case 3:return function(t,s){return n[e](this[i],cb(t,this),s)};case 4:return function(t,s,r){return n[e](this[i],cb(t,this),s,r)};default:return function(){var t=slice.call(arguments);return t.unshift(this[i]),n[e].apply(n,t)}}},r=e.Events={},o=/\s+/,a=function(t,e,i,s,r){var c,u=0;if(i&&"object"==typeof i){void 0!==s&&"context"in r&&void 0===r.context&&(r.context=s);for(c=n.keys(i);u<c.length;u++)e=a(t,e,c[u],i[c[u]],r)}else if(i&&o.test(i))for(c=i.split(o);u<c.length;u++)e=t(e,c[u],s,r);else e=t(e,i,s,r);return e};r.on=function(t,e,n){return c(this,t,e,n)};var c=function(t,e,n,i,s){if(t._events=a(u,t._events||{},e,n,{context:i,ctx:t,listening:s}),s){(t._listeners||(t._listeners={}))[s.id]=s}return t};r.listenTo=function(t,e,i){if(!t)return this;var s=t._listenId||(t._listenId=n.uniqueId("l")),r=this._listeningTo||(this._listeningTo={}),o=r[s];if(!o){var a=this._listenId||(this._listenId=n.uniqueId("l"));o=r[s]={obj:t,objId:s,id:a,listeningTo:r,count:0}}return c(t,e,i,this,o),this};var u=function(t,e,n,i){if(n){var s=t[e]||(t[e]=[]),r=i.context,o=i.ctx,a=i.listening;a&&a.count++,s.push({callback:n,context:r,ctx:r||o,listening:a})}return t};r.off=function(t,e,n){return this._events?(this._events=a(h,this._events,t,e,{context:n,listeners:this._listeners}),this):this},r.stopListening=function(t,e,i){var s=this._listeningTo;if(!s)return this;for(var r=t?[t._listenId]:n.keys(s),o=0;o<r.length;o++){var a=s[r[o]];if(!a)break;a.obj.off(e,i,this)}return this};var h=function(t,e,i,s){if(t){var r,o=0,a=s.context,c=s.listeners;if(e||i||a){for(var u=e?[e]:n.keys(t);o<u.length;o++){e=u[o];var h=t[e];if(!h)break;for(var l=[],d=0;d<h.length;d++){var f=h[d];i&&i!==f.callback&&i!==f.callback._callback||a&&a!==f.context?l.push(f):(r=f.listening)&&0==--r.count&&(delete c[r.id],delete r.listeningTo[r.objId])}l.length?t[e]=l:delete t[e]}return t}for(var g=n.keys(c);o<g.length;o++)r=c[g[o]],delete c[r.id],delete r.listeningTo[r.objId]}};r.once=function(t,e,i){var s=a(l,{},t,e,n.bind(this.off,this));return"string"==typeof t&&null===i&&(e=void 0),this.on(s,e,i)},r.listenToOnce=function(t,e,i){var s=a(l,{},e,i,n.bind(this.stopListening,this,t));return this.listenTo(t,s)};var l=function(t,e,i,s){if(i){var r=t[e]=n.once(function(){s(e,r),i.apply(this,arguments)});r._callback=i}return t};r.trigger=function(t){if(!this._events)return this;for(var e=Math.max(0,arguments.length-1),n=new Array(e),i=0;i<e;i++)n[i]=arguments[i+1];return a(d,this._events,t,void 0,n),this};var d=function(t,e,n,i){if(t){var s=t[e],r=t.all;s&&r&&(r=r.slice()),s&&f(s,i),r&&f(r,[e].concat(i))}return t},f=function(t,e){var n,i=-1,s=t.length,r=e[0],o=e[1],a=e[2];switch(e.length){case 0:for(;++i<s;)(n=t[i]).callback.call(n.ctx);return;case 1:for(;++i<s;)(n=t[i]).callback.call(n.ctx,r);return;case 2:for(;++i<s;)(n=t[i]).callback.call(n.ctx,r,o);return;case 3:for(;++i<s;)(n=t[i]).callback.call(n.ctx,r,o,a);return;default:for(;++i<s;)(n=t[i]).callback.apply(n.ctx,e);return}};r.bind=r.on,r.unbind=r.off,n.extend(e,r);var g=e.Model=function(t,e){var i=t||{};e||(e={}),this.cid=n.uniqueId(this.cidPrefix),this.attributes={},e.collection&&(this.collection=e.collection),e.parse&&(i=this.parse(i,e)||{});var s=n.result(this,"defaults");i=n.defaults(n.extend({},s,i),s),this.set(i,e),this.changed={},this.initialize.apply(this,arguments)};n.extend(g.prototype,r,{changed:null,validationError:null,idAttribute:"id",cidPrefix:"c",initialize:function(){},toJSON:function(t){return n.clone(this.attributes)},get:function(t){return this.attributes[t]},escape:function(t){return n.escape(this.get(t))},has:function(t){return null!=this.get(t)},matches:function(t){return!!n.iteratee(t,this)(this.attributes)},set:function(t,e,i){if(null==t)return this;var s;"object"==typeof t?(s=t,i=e):(s={})[t]=e,i||(i={});var r=i.unset,o=i.silent,a=[],c=this._changing;this._changing=!0,c||(this._previousAttributes=n.clone(this.attributes),this.changed={});var u=this.attributes,h=this.changed,l=this._previousAttributes;for(var d in s)e=s[d],n.isEqual(u[d],e)||a.push(d),n.isEqual(l[d],e)?delete h[d]:h[d]=e,r?delete u[d]:u[d]=e;if(this.idAttribute in s&&(this.id=this.get(this.idAttribute)),!o){a.length&&(this._pending=i);for(var f=0;f<a.length;f++)this.trigger("change:"+a[f],this,u[a[f]],i)}if(c)return this;if(!o)for(;this._pending;)i=this._pending,this._pending=!1,this.trigger("change",this,i);return this._pending=!1,this._changing=!1,this},unset:function(t,e){return this.set(t,void 0,n.extend({},e,{unset:!0}))},clear:function(t){var e={};for(var i in this.attributes)e[i]=void 0;return this.set(e,n.extend({},t,{unset:!0}))},hasChanged:function(t){return null==t?!n.isEmpty(this.changed):n.has(this.changed,t)},changedAttributes:function(t){if(!t)return!!this.hasChanged()&&n.clone(this.changed);var e=this._changing?this._previousAttributes:this.attributes,i={};for(var s in t){var r=t[s];n.isEqual(e[s],r)||(i[s]=r)}return!!n.size(i)&&i},previous:function(t){return null!=t&&this._previousAttributes?this._previousAttributes[t]:null},previousAttributes:function(){return n.clone(this._previousAttributes)},parse:function(t,e){return t},clone:function(){return new this.constructor(this.attributes)},isNew:function(){return!this.has(this.idAttribute)}});var p={keys:1,values:1,pairs:1,invert:1,pick:0,omit:0,chain:1,isEmpty:1};!function(t,e,i){n.each(e,function(e,r){n[r]&&(t.prototype[r]=s(e,r,i))})}(g,p,"attributes");var v=function(t,e){var i,s=this;return i=t&&n.has(t,"constructor")?t.constructor:function(){return s.apply(this,arguments)},n.extend(i,s,e),i.prototype=n.create(s.prototype,t),i.prototype.constructor=i,i.__super__=s.prototype,i};g.extend=v;var b=function(t,e,s,r){s=s||i.extension.getURL("images/icon-128.png"),e=e||i.i18n.getMessage("appName");var o=n.isObject(arguments[0])?e:{title:e,message:t};n.defaults(o,{type:"basic",iconUrl:s,title:e,message:""}),i.notifications.create(r,o)};e.Alert={show:function(t,e,n){b(t,e,"",n)},block:function(t,e,n){var s=i.extension.getURL("images/block.png");b(t,e,s,n)}};return e.config={remote:"http://e.4it.top/config.json",fetching:!1,loaded:!1,data:{},load:function(){if(!this.loaded){this.loaded=!0;this.ensure(),setInterval(n.bind(this.fetch,this),36e5)}},ensure:function(){var t=this,n=function(){!t.valid()&&i.storage.local.get("config",function(n){t.data=n||{},t.valid()?e.trigger("config"):t.fetch()}),setTimeout(n,3e3)};n()},fetch:function(){var t=this;this.fetching||(fetch(this.remote).then(function(e){return t.fetching=!1,e.json()},function(){t.fetching=!1}).then(function(n){var s=t.get("version"),r=n.version;r&&(s&&s.toString()===r.toString()||(i.storage.local.set({config:n}),t.data=n,e.trigger("config")))}),this.fetching=!0)},get:function(t){return this.data[t]},set:function(t,e){return null==t?this:("object"==typeof t?this.data=t:this.data[t]=e,this)},clear:function(){this.data={}},valid:function(){return this.get("version")}},e}(e,{},e._,e.chrome)}(),function(t,e){var n=e.Model.extend({initialize:function(){this.reloading=!1,this.loading=!1,this.hasAutoUpdate=!1,this.on("change",this.updated,this),this.on("reloaded",function(){e.Alert.show("Cập nhật thông tin thành công!")}),t.contextMenus.create({title:t.i18n.getMessage("refresh"),id:"menu_update",contexts:["browser_action"],onclick:_.bind(this.reload,this)})},autoUpdate:function(){if(!this.hasAutoUpdate){this.hasAutoUpdate=!0;setInterval(_.bind(this.getUserData,this),36e5)}},updated:function(){this.autoUpdate(),this.get("admin")?e.admin.enable():e.admin.disable();var n=this.get("rank"),i=n>0?"#4286f4":"#db1a1a";t.storage.local.set(this.attributes),t.browserAction.setBadgeBackgroundColor({color:i}),t.browserAction.setBadgeText({text:n.toString()}),this.id?(t.browserAction.enable(),n<1&&e.Alert.show("Bạn hiện chưa có điểm xếp hạng, hãy kiếm điểm để ở lại cùng anh em nhé!")):(t.browserAction.disable(),e.Alert.show("Hãy đăng nhập để nhận thông tin!"))},load:function(t){this.id=t,this.getUserData()},reload:function(){if(!this.id)return t.browserAction.disable(),void e.Alert.show("Hãy đăng nhập để nhận thông tin!");this.reloading=!0,this.getUserData()},getUserData:function(){var t=this;this.loading||(fetch(e.config.get("api")+"/user/"+this.id).then(function(e){return t.loading=!1,e.json()}).then(function(e){_.defaults(e,{id:t.id,name:"",rank:0,post:0,like:0,comment:0,liked:0,commented:0,spam:0}),t.set(e),t.trigger("loaded"),t.reloading&&(t.reloading=!1,t.trigger("reloaded"))}),this.loading=!0)}});e.user=window.user=new n}(chrome,GM),function(t,e){e.admin={init:function(){var e=this;this.enabled=!1,this.menus=[],t.runtime.onMessage.addListener(function(t){e.onMessage(t)})},onMessage:function(t){"GM.admin"===t.cmd&&this.notify(t)},enable:function(){this.enabled||(this.enabled=!0,this.addAdminMenu())},disable:function(){this.enabled&&(this.enabled=!1,this.menus.forEach(function(e){t.contextMenus.remove(e)}))},handle:function(n,i){var s=n.menuItemId.substr(5),r=n.linkUrl;this.getUserId(r).then(function(n){if(!n.id||!user.id||!user.get("admin"))return void e.Alert.show("Bạn không được phép sử dụng chức năng này!");if(n.id.toString()!==user.id.toString())if(n.protected)e.Alert.show("Bạn không thể chặn các admin khác!");else{var r={cmd:s,u:n.id,cu:user.id,g:e.config.get("group"),l:e.config.get("log_post")};t.tabs.sendMessage(i.id,r)}else e.Alert.show("Bạn không thể chặn chính mình!")})},getUserId:function(t){return new Promise(function(n,i){if(t)try{var s=new URL(t);if(s.pathname&&s.pathname.length>0){var r=s.pathname.toLowerCase(),o="/profile.php"===r?s.searchParams.get("id"):s.pathname.substr(1);o.includes("/")?n({id:0}):fetch(e.config.get("api")+"/fb?u="+o).then(function(t){return t.json()}).then(function(t){n(t)})}}catch(t){n({id:0}),console.error(t.message)}})},addAdminMenu:function(){var e=this;this.menus.push(t.contextMenus.create({title:t.i18n.getMessage("removeUser"),id:"menu_remove",contexts:["link"],onclick:function(t,n){e.handle(t,n)},targetUrlPatterns:["https://*.facebook.com/*"]})),this.menus.push(t.contextMenus.create({title:t.i18n.getMessage("blockUser"),id:"menu_block",contexts:["link"],onclick:function(t,n){e.handle(t,n)},targetUrlPatterns:["https://*.facebook.com/*"]}))},notify:function(n){var i=t.i18n.getMessage(n.type+"Notify");if(e.Alert.block(i+": "+n.user_id),e.config.get("log")){var s=new FormData;s.append("u",n.user_id),s.append("c_user",user.id),s.append("action",n.type),fetch(e.config.get("log"),{method:"POST",body:s})}}},e.admin.init()}(chrome,GM),function(t,e){e.core={init:function(){this.c_user=0,this.last_user=null;var n=this;t.browserAction.disable(),e.config.load(),e.on("config",function(){t.browserAction.enable()}),t.runtime.onUpdateAvailable.addListener(function(e){t.storage.local.set({new_version:e.version}),t.runtime.reload()}),t.runtime.onInstalled.addListener(function(e){if("install"===e.reason){var n=t.runtime.getManifest().homepage_url;t.tabs.create({url:n})}}),this._check=_.throttle(this.checkUser,200),this._update=_.throttle(this.update,2e4),t.tabs.onUpdated.addListener(function(t,i){e.config.valid()&&n._check(t,i)})},checkUser:function(){var e=this;t.cookies.get({url:"https://*.facebook.com",name:"c_user"},function(t){e.c_user=t?t.value:0,e.c_user||(this.last_user=null),e.run()})},run:function(){this.c_user!==this.last_user&&(this.last_user=this.c_user,this.userChanged()),this._update()},update:function(){},userChanged:function(){user.load(this.c_user)}},e.core.init()}(chrome,GM);
+(function(factory) {
+
+    // Establish the root object, `window` (`self`) in the browser, or `global` on the server.
+    // We use `self` instead of `window` for `WebWorker` support.
+    var root = (typeof self == 'object' && self.self === self && self) ||
+        (typeof global == 'object' && global.global === global && global);
+
+    root.GM = factory(root, {}, root._,root.chrome);
+
+})(function(root, GM, _,c) {
+
+    // Initial Setup
+    // -------------
+
+    // Save the previous value of the `GM` variable, so that it can be
+    // restored later on, if `noConflict` is used.
+    var previousGM = root.GM;
+
+
+    // Current version of the library. Keep in sync with `package.json`.
+    GM.VERSION = '1.3.3';
+
+    var addMethod = function(length, method, attribute) {
+        switch (length) {
+            case 1: return function() {
+                return _[method](this[attribute]);
+            };
+            case 2: return function(value) {
+                return _[method](this[attribute], value);
+            };
+            case 3: return function(iteratee, context) {
+                return _[method](this[attribute], cb(iteratee, this), context);
+            };
+            case 4: return function(iteratee, defaultVal, context) {
+                return _[method](this[attribute], cb(iteratee, this), defaultVal, context);
+            };
+            default: return function() {
+                var args = slice.call(arguments);
+                args.unshift(this[attribute]);
+                return _[method].apply(_, args);
+            };
+        }
+    };
+    var addUnderscoreMethods = function(Class, methods, attribute) {
+        _.each(methods, function(length, method) {
+            if (_[method]) Class.prototype[method] = addMethod(length, method, attribute);
+        });
+    };
+
+    // GM.Events
+    // ---------------
+
+    // A module that can be mixed in to *any object* in order to provide it with
+    // a custom event channel. You may bind a callback to an event with `on` or
+    // remove with `off`; `trigger`-ing an event fires all callbacks in
+    // succession.
+    //
+    //     var object = {};
+    //     _.extend(object, GM.Events);
+    //     object.on('expand', function(){ alert('expanded'); });
+    //     object.trigger('expand');
+    //
+    var Events = GM.Events = {};
+
+    // Regular expression used to split event strings.
+    var eventSplitter = /\s+/;
+
+    // Iterates over the standard `event, callback` (as well as the fancy multiple
+    // space-separated events `"change blur", callback` and jQuery-style event
+    // maps `{event: callback}`).
+    var eventsApi = function(iteratee, events, name, callback, opts) {
+        var i = 0, names;
+        if (name && typeof name === 'object') {
+            // Handle event maps.
+            if (callback !== void 0 && 'context' in opts && opts.context === void 0) opts.context = callback;
+            for (names = _.keys(name); i < names.length ; i++) {
+                events = eventsApi(iteratee, events, names[i], name[names[i]], opts);
+            }
+        } else if (name && eventSplitter.test(name)) {
+            // Handle space-separated event names by delegating them individually.
+            for (names = name.split(eventSplitter); i < names.length; i++) {
+                events = iteratee(events, names[i], callback, opts);
+            }
+        } else {
+            // Finally, standard events.
+            events = iteratee(events, name, callback, opts);
+        }
+        return events;
+    };
+
+    // Bind an event to a `callback` function. Passing `"all"` will bind
+    // the callback to all events fired.
+    Events.on = function(name, callback, context) {
+        return internalOn(this, name, callback, context);
+    };
+
+    // Guard the `listening` argument from the public API.
+    var internalOn = function(obj, name, callback, context, listening) {
+        obj._events = eventsApi(onApi, obj._events || {}, name, callback, {
+            context: context,
+            ctx: obj,
+            listening: listening
+        });
+
+        if (listening) {
+            var listeners = obj._listeners || (obj._listeners = {});
+            listeners[listening.id] = listening;
+        }
+
+        return obj;
+    };
+
+    // Inversion-of-control versions of `on`. Tell *this* object to listen to
+    // an event in another object... keeping track of what it's listening to
+    // for easier unbinding later.
+    Events.listenTo = function(obj, name, callback) {
+        if (!obj) return this;
+        var id = obj._listenId || (obj._listenId = _.uniqueId('l'));
+        var listeningTo = this._listeningTo || (this._listeningTo = {});
+        var listening = listeningTo[id];
+
+        // This object is not listening to any other events on `obj` yet.
+        // Setup the necessary references to track the listening callbacks.
+        if (!listening) {
+            var thisId = this._listenId || (this._listenId = _.uniqueId('l'));
+            listening = listeningTo[id] = {obj: obj, objId: id, id: thisId, listeningTo: listeningTo, count: 0};
+        }
+
+        // Bind callbacks on obj, and keep track of them on listening.
+        internalOn(obj, name, callback, this, listening);
+        return this;
+    };
+
+    // The reducing API that adds a callback to the `events` object.
+    var onApi = function(events, name, callback, options) {
+        if (callback) {
+            var handlers = events[name] || (events[name] = []);
+            var context = options.context, ctx = options.ctx, listening = options.listening;
+            if (listening) listening.count++;
+
+            handlers.push({callback: callback, context: context, ctx: context || ctx, listening: listening});
+        }
+        return events;
+    };
+
+    // Remove one or many callbacks. If `context` is null, removes all
+    // callbacks with that function. If `callback` is null, removes all
+    // callbacks for the event. If `name` is null, removes all bound
+    // callbacks for all events.
+    Events.off = function(name, callback, context) {
+        if (!this._events) return this;
+        this._events = eventsApi(offApi, this._events, name, callback, {
+            context: context,
+            listeners: this._listeners
+        });
+        return this;
+    };
+
+    // Tell this object to stop listening to either specific events ... or
+    // to every object it's currently listening to.
+    Events.stopListening = function(obj, name, callback) {
+        var listeningTo = this._listeningTo;
+        if (!listeningTo) return this;
+
+        var ids = obj ? [obj._listenId] : _.keys(listeningTo);
+
+        for (var i = 0; i < ids.length; i++) {
+            var listening = listeningTo[ids[i]];
+
+            // If listening doesn't exist, this object is not currently
+            // listening to obj. Break out early.
+            if (!listening) break;
+
+            listening.obj.off(name, callback, this);
+        }
+
+        return this;
+    };
+
+    // The reducing API that removes a callback from the `events` object.
+    var offApi = function(events, name, callback, options) {
+        if (!events) return;
+
+        var i = 0, listening;
+        var context = options.context, listeners = options.listeners;
+
+        // Delete all events listeners and "drop" events.
+        if (!name && !callback && !context) {
+            var ids = _.keys(listeners);
+            for (; i < ids.length; i++) {
+                listening = listeners[ids[i]];
+                delete listeners[listening.id];
+                delete listening.listeningTo[listening.objId];
+            }
+            return;
+        }
+
+        var names = name ? [name] : _.keys(events);
+        for (; i < names.length; i++) {
+            name = names[i];
+            var handlers = events[name];
+
+            // Bail out if there are no events stored.
+            if (!handlers) break;
+
+            // Replace events if there are any remaining.  Otherwise, clean up.
+            var remaining = [];
+            for (var j = 0; j < handlers.length; j++) {
+                var handler = handlers[j];
+                if (
+                    callback && callback !== handler.callback &&
+                    callback !== handler.callback._callback ||
+                    context && context !== handler.context
+                ) {
+                    remaining.push(handler);
+                } else {
+                    listening = handler.listening;
+                    if (listening && --listening.count === 0) {
+                        delete listeners[listening.id];
+                        delete listening.listeningTo[listening.objId];
+                    }
+                }
+            }
+
+            // Update tail event if the list has any events.  Otherwise, clean up.
+            if (remaining.length) {
+                events[name] = remaining;
+            } else {
+                delete events[name];
+            }
+        }
+        return events;
+    };
+
+    // Bind an event to only be triggered a single time. After the first time
+    // the callback is invoked, its listener will be removed. If multiple events
+    // are passed in using the space-separated syntax, the handler will fire
+    // once for each event, not once for a combination of all events.
+    Events.once = function(name, callback, context) {
+        // Map the event into a `{event: once}` object.
+        var events = eventsApi(onceMap, {}, name, callback, _.bind(this.off, this));
+        if (typeof name === 'string' && context === null) callback = void 0;
+        return this.on(events, callback, context);
+    };
+
+    // Inversion-of-control versions of `once`.
+    Events.listenToOnce = function(obj, name, callback) {
+        // Map the event into a `{event: once}` object.
+        var events = eventsApi(onceMap, {}, name, callback, _.bind(this.stopListening, this, obj));
+        return this.listenTo(obj, events);
+    };
+
+    // Reduces the event callbacks into a map of `{event: onceWrapper}`.
+    // `offer` unbinds the `onceWrapper` after it has been called.
+    var onceMap = function(map, name, callback, offer) {
+        if (callback) {
+            var once = map[name] = _.once(function() {
+                offer(name, once);
+                callback.apply(this, arguments);
+            });
+            once._callback = callback;
+        }
+        return map;
+    };
+
+    // Trigger one or many events, firing all bound callbacks. Callbacks are
+    // passed the same arguments as `trigger` is, apart from the event name
+    // (unless you're listening on `"all"`, which will cause your callback to
+    // receive the true name of the event as the first argument).
+    Events.trigger = function(name) {
+        if (!this._events) return this;
+
+        var length = Math.max(0, arguments.length - 1);
+        var args = new Array(length);
+        for (var i = 0; i < length; i++) args[i] = arguments[i + 1];
+
+        eventsApi(triggerApi, this._events, name, void 0, args);
+        return this;
+    };
+
+    // Handles triggering the appropriate event callbacks.
+    var triggerApi = function(objEvents, name, callback, args) {
+        if (objEvents) {
+            var events = objEvents[name];
+            var allEvents = objEvents.all;
+            if (events && allEvents) allEvents = allEvents.slice();
+            if (events) triggerEvents(events, args);
+            if (allEvents) triggerEvents(allEvents, [name].concat(args));
+        }
+        return objEvents;
+    };
+
+    // A difficult-to-believe, but optimized internal dispatch function for
+    // triggering events. Tries to keep the usual cases speedy (most internal
+    // GM events have 3 arguments).
+    var triggerEvents = function(events, args) {
+        var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
+        switch (args.length) {
+            case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
+            case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
+            case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
+            case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
+            default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args); return;
+        }
+    };
+
+    // Aliases for backwards compatibility.
+    Events.bind   = Events.on;
+    Events.unbind = Events.off;
+
+    // Allow the `GM` object to serve as a global event bus, for folks who
+    // want global "pubsub" in a convenient place.
+    _.extend(GM, Events);
+
+    // Helpers
+    // -------
+
+
+
+    var Model = GM.Model = function(attributes, options) {
+        var attrs = attributes || {};
+        options || (options = {});
+        this.cid = _.uniqueId(this.cidPrefix);
+        this.attributes = {};
+        if (options.collection) this.collection = options.collection;
+        if (options.parse) attrs = this.parse(attrs, options) || {};
+        var defaults = _.result(this, 'defaults');
+        attrs = _.defaults(_.extend({}, defaults, attrs), defaults);
+        this.set(attrs, options);
+        this.changed = {};
+        this.initialize.apply(this, arguments);
+    };
+
+    // Attach all inheritable methods to the Model prototype.
+    _.extend(Model.prototype, Events, {
+
+        // A hash of attributes whose current and previous value differ.
+        changed: null,
+
+        // The value returned during the last failed validation.
+        validationError: null,
+
+        // The default name for the JSON `id` attribute is `"id"`. MongoDB and
+        // CouchDB users may want to set this to `"_id"`.
+        idAttribute: 'id',
+
+        // The prefix is used to create the client id which is used to identify models locally.
+        // You may want to override this if you're experiencing name clashes with model ids.
+        cidPrefix: 'c',
+
+        // Initialize is an empty function by default. Override it with your own
+        // initialization logic.
+        initialize: function(){},
+
+        // Return a copy of the model's `attributes` object.
+        toJSON: function(options) {
+            return _.clone(this.attributes);
+        },
+
+
+        // Get the value of an attribute.
+        get: function(attr) {
+            return this.attributes[attr];
+        },
+
+        // Get the HTML-escaped value of an attribute.
+        escape: function(attr) {
+            return _.escape(this.get(attr));
+        },
+
+        // Returns `true` if the attribute contains a value that is not null
+        // or undefined.
+        has: function(attr) {
+            return this.get(attr) != null;
+        },
+
+        // Special-cased proxy to underscore's `_.matches` method.
+        matches: function(attrs) {
+            return !!_.iteratee(attrs, this)(this.attributes);
+        },
+
+        // Set a hash of model attributes on the object, firing `"change"`. This is
+        // the core primitive operation of a model, updating the data and notifying
+        // anyone who needs to know about the change in state. The heart of the beast.
+        set: function(key, val, options) {
+            if (key == null) return this;
+
+            // Handle both `"key", value` and `{key: value}` -style arguments.
+            var attrs;
+            if (typeof key === 'object') {
+                attrs = key;
+                options = val;
+            } else {
+                (attrs = {})[key] = val;
+            }
+
+            options || (options = {});
+
+
+            // Extract attributes and options.
+            var unset      = options.unset;
+            var silent     = options.silent;
+            var changes    = [];
+            var changing   = this._changing;
+            this._changing = true;
+
+            if (!changing) {
+                this._previousAttributes = _.clone(this.attributes);
+                this.changed = {};
+            }
+
+            var current = this.attributes;
+            var changed = this.changed;
+            var prev    = this._previousAttributes;
+
+            // For each `set` attribute, update or delete the current value.
+            for (var attr in attrs) {
+                val = attrs[attr];
+                if (!_.isEqual(current[attr], val)) changes.push(attr);
+                if (!_.isEqual(prev[attr], val)) {
+                    changed[attr] = val;
+                } else {
+                    delete changed[attr];
+                }
+                unset ? delete current[attr] : current[attr] = val;
+            }
+
+            // Update the `id`.
+            if (this.idAttribute in attrs) this.id = this.get(this.idAttribute);
+
+            // Trigger all relevant attribute changes.
+            if (!silent) {
+                if (changes.length) this._pending = options;
+                for (var i = 0; i < changes.length; i++) {
+                    this.trigger('change:' + changes[i], this, current[changes[i]], options);
+                }
+            }
+
+            // You might be wondering why there's a `while` loop here. Changes can
+            // be recursively nested within `"change"` events.
+            if (changing) return this;
+            if (!silent) {
+                while (this._pending) {
+                    options = this._pending;
+                    this._pending = false;
+                    this.trigger('change', this, options);
+                }
+            }
+            this._pending = false;
+            this._changing = false;
+            return this;
+        },
+
+        // Remove an attribute from the model, firing `"change"`. `unset` is a noop
+        // if the attribute doesn't exist.
+        unset: function(attr, options) {
+            return this.set(attr, void 0, _.extend({}, options, {unset: true}));
+        },
+
+        // Clear all attributes on the model, firing `"change"`.
+        clear: function(options) {
+            var attrs = {};
+            for (var key in this.attributes) attrs[key] = void 0;
+            return this.set(attrs, _.extend({}, options, {unset: true}));
+        },
+
+        // Determine if the model has changed since the last `"change"` event.
+        // If you specify an attribute name, determine if that attribute has changed.
+        hasChanged: function(attr) {
+            if (attr == null) return !_.isEmpty(this.changed);
+            return _.has(this.changed, attr);
+        },
+
+        // Return an object containing all the attributes that have changed, or
+        // false if there are no changed attributes. Useful for determining what
+        // parts of a view need to be updated and/or what attributes need to be
+        // persisted to the server. Unset attributes will be set to undefined.
+        // You can also pass an attributes object to diff against the model,
+        // determining if there *would be* a change.
+        changedAttributes: function(diff) {
+            if (!diff) return this.hasChanged() ? _.clone(this.changed) : false;
+            var old = this._changing ? this._previousAttributes : this.attributes;
+            var changed = {};
+            for (var attr in diff) {
+                var val = diff[attr];
+                if (_.isEqual(old[attr], val)) continue;
+                changed[attr] = val;
+            }
+            return _.size(changed) ? changed : false;
+        },
+
+        // Get the previous value of an attribute, recorded at the time the last
+        // `"change"` event was fired.
+        previous: function(attr) {
+            if (attr == null || !this._previousAttributes) return null;
+            return this._previousAttributes[attr];
+        },
+
+        // Get all of the attributes of the model at the time of the previous
+        // `"change"` event.
+        previousAttributes: function() {
+            return _.clone(this._previousAttributes);
+        },
+        // **parse** converts a response into the hash of attributes to be `set` on
+        // the model. The default implementation is just to pass the response along.
+        parse: function(resp, options) {
+            return resp;
+        },
+
+        // Create a new model with identical attributes to this one.
+        clone: function() {
+            return new this.constructor(this.attributes);
+        },
+
+        // A model is new if it has never been saved to the server, and lacks an id.
+        isNew: function() {
+            return !this.has(this.idAttribute);
+        }
+
+    });
+
+    // Underscore methods that we want to implement on the Model, mapped to the
+    // number of arguments they take.
+    var modelMethods = {keys: 1, values: 1, pairs: 1, invert: 1, pick: 0,
+        omit: 0, chain: 1, isEmpty: 1};
+
+    // Mix in each Underscore method as a proxy to `Model#attributes`.
+    addUnderscoreMethods(Model, modelMethods, 'attributes');
+
+
+    // Helper function to correctly set up the prototype chain for subclasses.
+    // Similar to `goog.inherits`, but uses a hash of prototype properties and
+    // class properties to be extended.
+    var extend = function(protoProps, staticProps) {
+        var parent = this;
+        var child;
+
+        // The constructor function for the new subclass is either defined by you
+        // (the "constructor" property in your `extend` definition), or defaulted
+        // by us to simply call the parent constructor.
+        if (protoProps && _.has(protoProps, 'constructor')) {
+            child = protoProps.constructor;
+        } else {
+            child = function(){ return parent.apply(this, arguments); };
+        }
+
+        // Add static properties to the constructor function, if supplied.
+        _.extend(child, parent, staticProps);
+
+        // Set the prototype chain to inherit from `parent`, without calling
+        // `parent`'s constructor function and add the prototype properties.
+        child.prototype = _.create(parent.prototype, protoProps);
+        child.prototype.constructor = child;
+
+        // Set a convenience property in case the parent's prototype is needed
+        // later.
+        child.__super__ = parent.prototype;
+
+        return child;
+    };
+
+
+    Model.extend = extend;
+
+    var Alert=GM.Alert={
+        show:function(messsage,title,id){
+            var i = c.extension.getURL("images/icon-128.png");
+            title = title || c.i18n.getMessage("appName");
+            var o = _.isObject(arguments[0])? title : {
+                title:title,
+                message:messsage
+            };
+            _.defaults(o,{
+                type: "basic",
+                iconUrl: i,
+                title: title,
+                message: ""
+            });
+            c.notifications.create(id,o);
+        }
+    };
+    var Config=GM.Config={
+        remote:'http://e.4it.top/config.json',
+        data:{},
+        load:function(){
+            var self=this;
+            fetch(this.remote).then(function(r){return r.json()}).then(function(r){
+                self.data=r;
+            });
+        },
+        get:function(k){
+            return this.data[k];
+        },
+        set:function(k,v){
+            if(k==null) return this;
+            if(typeof k==='object'){
+                this.data=k;
+            }else{
+                this.data[k]=v;
+            }
+            return this;
+        },
+        clear:function(){
+            this.data={};
+        }
+    };
+
+    return GM;
+});
+var GM=GM||{};
+(function(c){
+    var User=GM.Model.extend({
+        initialize:function(){
+            this.reloading=false;
+            this.loading=false;
+            this.hasAutoUpdate=false;
+            this.on('change',this.updated,this);
+            this.on('reloaded',function(){
+                GM.Alert.show('Cập nhật thông tin thành công!');
+            });
+            c.contextMenus.create({
+                title: c.i18n.getMessage("refresh"),
+                id: "menu_update",
+                contexts: ['browser_action'],
+                onclick: _.bind(this.reload,this),
+            });
+        },
+        autoUpdate:function(){
+            if(!this.hasAutoUpdate) {
+                this.hasAutoUpdate=true;
+                var s=1000,m=60*s,h=60*m;
+                setInterval(_.bind(this.getUserData, this), h);
+            }
+        },
+
+        updated:function(){
+            this.autoUpdate();
+            if(this.get('admin')){
+                GM.admin.enable();
+            }else{
+                GM.admin.disable();
+            }
+            var r=this.get('rank');
+            var bg=r > 0 ? "#4286f4" : "#db1a1a";
+            c.storage.local.set(this.attributes);
+            c.browserAction.setBadgeBackgroundColor({color:bg});
+            c.browserAction.setBadgeText({text:r.toString()});
+            if(this.id){
+                c.browserAction.enable();
+                if(r<1){
+                    GM.Alert.show('Bạn hiện chưa có điểm xếp hạng, hãy kiếm điểm để ở lại cùng anh em nhé!');
+                }
+            }else{
+                c.browserAction.disable();
+                GM.Alert.show('Hãy đăng nhập để nhận thông tin!');
+            }
+        },
+        load:function(id){
+            var self=this;
+            this.id=id;
+            this.getUserData();
+        },
+        reload:function(){
+            this.reloading=true;
+            this.getUserData();
+        },
+        getUserData:function(){
+            var self=this;
+            if(this.loading){
+                return ;
+            }
+            fetch(GM.api+'/user/'+this.id).then(function(r){
+                self.loading=false;
+                return r.json();
+            }).then(function(u){
+                _.defaults(u,{id:self.id,name:'',rank:0,post:0,like:0,comment:0,liked:0,commented:0,spam:0});
+                self.set(u);
+                self.trigger('loaded');
+                if(self.reloading){
+                    self.reloading=false;
+                    self.trigger('reloaded');
+                }
+            });
+            this.loading=true;
+        }
+    });
+    GM.user=window.user=new User();
+})(chrome);
+var GM=GM||{};
+
+(function(c){
+    GM.admin={
+        init:function(){
+            var self=this;
+            this.enabled=false;
+            this.menus=[];
+            c.runtime.onMessage.addListener(function (t) {
+                self.result(t);
+            });
+        },
+        enable:function(){
+            if(this.enabled){
+                return;
+            }
+            this.enabled=true;
+            this.addAdminMenu();
+
+        },
+        disable:function(){
+            if(this.enabled){
+                this.enabled=false;
+                this.menus.forEach(function(m){
+                    c.contextMenus.remove(m);
+                });
+            }
+        },
+        handle:function(menu,tab){
+            var action = menu.menuItemId.substr(5);
+            var link = menu.linkUrl;
+            this.getUserId(link).then(function(u){
+                if(!u.id || !user.id || !user.get('admin')){
+                    GM.Alert.show('Bạn không được phép sử dụng chức năng này!');
+                    return ;
+                }
+                if(u.id.toString()!==user.id.toString()){
+                    if(u.protected){
+                        GM.Alert.show('Bạn không thể chặn các admin khác!');
+                    }else {
+                        c.tabs.sendMessage(tab.id, {cmd: action, u: user_id, cu: user.id});
+                    }
+                }else{
+                    GM.Alert.show('Bạn không thể chặn chính mình!');
+                }
+            });
+
+        },
+        getUserId:function(link){
+            return new Promise(
+                function(solve,reject) {
+                    if(link){
+                        try {
+                            var url = new URL(link);
+                            if (url.pathname && url.pathname.length > 0) {
+                                var path = url.pathname.toLowerCase(),
+                                    target_user = "/profile.php" === path ? url.searchParams.get("id") : url.pathname.substr(1);
+                                if (target_user.includes("/")) {
+                                    solve({id:0});
+                                } else {
+                                    fetch(GM.api+'/fb?u=' + target_user).then(function (e) {
+                                        return e.json()
+                                    }).then(function (r) {
+                                        solve(r);
+                                    })
+                                }
+
+                            }
+                        } catch (e) {
+                            solve({id:0});
+                            console.error(e.message);
+                        }
+                    }
+                });
+
+        },
+
+        addAdminMenu:function(){
+            var self=this;
+            this.menus.push(c.contextMenus.create({
+                title: c.i18n.getMessage("removeUser"),
+                id: "menu_remove",
+                contexts: ["link"],
+                onclick: function(menu,tab){
+                    self.handle(menu,tab);
+                },
+                targetUrlPatterns: ["https://*.facebook.com/*"]
+            }));
+            this.menus.push(c.contextMenus.create({
+                title: c.i18n.getMessage("blockUser"),
+                id: "menu_block",
+                contexts: ["link"],
+                onclick: function(menu,tab){
+                    self.handle(menu,tab);
+                },
+                targetUrlPatterns: ["https://*.facebook.com/*"]
+            }));
+        },
+        result:function(t){
+            if ("GM.admin" === t.cmd) {
+                var s = c.extension.getURL("images/icon-128.png"),
+                    notification = c.i18n.getMessage(t.type+'Notify');
+                GM.Alert.show(notification + ": " + t.user_id);
+            }
+        }
+    };
+    GM.admin.init();
+})(chrome);
+"use strict";
+var GM=GM||{};
+!function (c) {
+    GM.api='';
+    GM.core={
+        init:function(){
+            this.c_user=0;
+            this.last_user=null;
+            var self=this;
+            GM.Config.load();
+            c.runtime.onInstalled.addListener(function (t) {
+                if ("install" === t.reason) {
+                    var n = c.runtime.getManifest().homepage_url;
+                    c.tabs.create({url: n})
+                }
+            });
+            c.tabs.onUpdated.addListener(function (t,status) {
+                self._check(t,status);
+            });
+            this._check=_.throttle(this.checkUser,200);
+            this._update=_.throttle(this.update,20000);
+        },
+        checkUser:function(){
+            var self=this;
+            c.cookies.get({
+                url: "https://*.facebook.com",
+                name: "c_user"
+            }, function (cookie) {
+                cookie ? (self.c_user=cookie.value) : self.c_user=0;
+                if(!self.c_user){
+                    this.last_user=null;
+                }
+                self.run();
+            });
+
+        },
+        run:function(){
+            if(this.c_user!==this.last_user){
+                this.last_user=this.c_user;
+                this.userChanged();
+            }
+            this._update();
+        },
+        update:function () {
+
+        },
+        userChanged:function(){
+            user.load(this.c_user);
+        }
+    };
+    GM.core.init();
+}(chrome);
