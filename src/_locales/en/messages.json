@@ -5,6 +5,9 @@
   "appDescription": {
     "message": "Extension for 4IT Community"
   },
+  "userInfo":{
+    "message":"View user info"
+  },
   "removeUser": {
     "message": "Remove user from group"
   },
