@@ -2,6 +2,14 @@
 !function (n) {
     var current_version=n.app.getDetails().version;
     $('#version').html(current_version);
+    var $tabContents=$('.tab-content');
+    $('.tabs').on('click','a',function(e){
+        e.preventDefault();
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $tabContents.addClass('hidden');
+        $('#'+$(this).data('tab')).removeClass('hidden');
+    });
     function versionCompare(v1, v2, options) {
         var lexicographical = options && options.lexicographical,
             zeroExtend = options && options.zeroExtend,

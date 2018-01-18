@@ -8,25 +8,40 @@
 <body>
 <div id="wrapper">
     <div id="popup">
-        <div id="header">
-            <img class="logo" src="images/icon-32.png">
-            <a href="https://www.facebook.com/groups/4it.community/"><h1>4IT Community</h1></a>
+        <nav class="nav">
+            <div class="nav-left">
+                <a class="brand" href="#"><img class="logo" src="images/icon-32.png"> 4IT Community</a>
+                <div class="tabs">
+                    <a href="#" data-tab="tab-feed">Bài viết</a>
+                    <a href="#" data-tab="tab-rank" class="active">Thứ hạng</a>
+                </div>
+            </div>
+        </nav>
+        <div id="tab-feed" class="tab-content hidden">
+            <div class="card">
+                <p>Hiện chưa có gì ở đây, tính năng đang phát triển vui lòng quay lại sau.</p>
+            </div>
         </div>
-        <div id="body">
+
+        <div id="tab-rank" class="tab-content ">
             <ul id="info" class="list-group">
                 <li id="name" class="list-group-item hidden align-items-center text-center"><img id="avatar" src=""> <span class="data"></span></li>
-                <li id="rank" class="d-flex list-group-item justify-content-between hidden c2">Hạng: <span class="data"></span></li>
-                <li id="post" class="d-flex list-group-item justify-content-between hidden c2">Số bài viết: <span class="data"></span></li>
-                <li id="like" class="d-flex list-group-item justify-content-between hidden c2">Số like: <span class="data"></span></li>
-                <li id="comment" class="d-flex list-group-item justify-content-between hidden c2">Số comment: <span class="data"></span></li>
-                <li id="liked" class="d-flex list-group-item justify-content-between hidden c2">Được like: <span class="data"></span></li>
-                <li id="commented" class="d-flex list-group-item justify-content-between hidden c2">Được comment: <span class="data"></span></li>
-                <li id="spam" class="d-flex list-group-item justify-content-between hidden c3">Spam: <span class="data"></span></li>
+                <li id="rank" class="d-flex list-group-item justify-content-between hidden">Hạng: <span class="data"></span></li>
+                <li id="post" class="d-flex list-group-item justify-content-between hidden">Số bài viết: <span class="data"></span></li>
+                <li id="like" class="d-flex list-group-item justify-content-between hidden">Số like: <span class="data"></span></li>
+                <li id="comment" class="d-flex list-group-item justify-content-between hidden">Số comment: <span class="data"></span></li>
+                <li id="liked" class="d-flex list-group-item justify-content-between hidden">Được like: <span class="data"></span></li>
+                <li id="commented" class="d-flex list-group-item justify-content-between hidden">Được comment: <span class="data"></span></li>
+                <li id="spam" class="d-flex list-group-item justify-content-between hidden">Spam: <span class="data"></span></li>
             </ul>
             <p id="error" class="alert alert-danger hidden">Không tìm thấy thông tin về bạn trên hệ thống, hãy đăng nhập vào <a href="http://4it.top">4it.top</a> để kiểm tra.</p>
+
+        </div>
+
+        <footer>
             <p class="pull-right alert hidden">Phiên bản: <span id="version"></span></p>
             <p id="new-version" class="alert alert-info hidden">Đã có phiên bản mới của extension, hãy cập nhật bạn nhé.</p>
-        </div>
+        </footer>
     </div>
 </div>
 <script src="scripts/zepto.min.js"></script>
