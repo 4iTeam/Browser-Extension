@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_appName__",
-	"version": "1.1.6",
+	"version": "1.2.0",
 	"manifest_version": 2,
 	"description": "__MSG_appDescription__",
 	"author": "4IT",
@@ -15,7 +15,8 @@
 	"default_locale": "en",
 	"background": {
 		"scripts": [
-			"scripts/underscore-min.js",
+			"scripts/libs/underscore-min.js",
+			"scripts/libs/apps.js",
 			"scripts/bg.js"
 		]
 	},
@@ -66,5 +67,6 @@
 		"images/*",
 		"styles/*",
 		"scripts/*"
-	]
+	],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

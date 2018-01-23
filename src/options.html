@@ -2,5 +2,25 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<p>Không có tùy chọn nào :) Hãy quay trở lại sau nhé.</p>
+<body>
+<div class="container">
+    <div class="row">
+
+        <label for="notify" class="col-1">Thông báo:</label>
+        <select id="notify" class="col-2">
+            <option value="">Tắt</option>
+            <option value="new">Khi có bài mới</option>
+            <option value="all">Mọi cập nhật</option>
+        </select>
+    </div>
+
+
+    <div id="status"></div>
+    <button id="save">Save</button>
+</div>
+
+<script src="scripts/libs/apps.js"></script>
+<script src="scripts/options.js"></script>
+
+</body>
 </html>

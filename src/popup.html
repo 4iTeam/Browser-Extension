@@ -3,48 +3,86 @@
 <head>
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+    <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/popup.css">
 </head>
 <body>
 <div id="wrapper">
-    <div id="popup">
+    <div id="popup" class="has-tabs">
         <nav class="nav">
             <div class="nav-left">
-                <a class="brand" href="#"><img class="logo" src="images/icon-32.png"> 4IT Community</a>
-                <div class="tabs">
+                <a class="brand" href="https://fb.com/1415192401896193" target="_blank"><img class="logo" src="images/icon-32.png"> 4IT Community</a>
+                <div class="tabs" id="tab-nav">
                     <a href="#" data-tab="tab-feed">Bài viết</a>
                     <a href="#" data-tab="tab-rank" class="active">Thứ hạng</a>
                 </div>
             </div>
         </nav>
-        <div id="tab-feed" class="tab-content hidden">
-            <div class="card">
-                <p>Hiện chưa có gì ở đây, tính năng đang phát triển vui lòng quay lại sau.</p>
-            </div>
+        <div id="tab-feed" class="tab-content hidden feed">
+            <div id="feeds"></div>
+            <div class="alert"><a href="https://fb.com/1415192401896193" target="_blank">Xem thêm tại 4IT Community</a></div>
         </div>
 
         <div id="tab-rank" class="tab-content ">
             <ul id="info" class="list-group">
-                <li id="name" class="list-group-item hidden align-items-center text-center"><img id="avatar" src=""> <span class="data"></span></li>
-                <li id="rank" class="d-flex list-group-item justify-content-between hidden">Hạng: <span class="data"></span></li>
-                <li id="post" class="d-flex list-group-item justify-content-between hidden">Số bài viết: <span class="data"></span></li>
-                <li id="like" class="d-flex list-group-item justify-content-between hidden">Số like: <span class="data"></span></li>
-                <li id="comment" class="d-flex list-group-item justify-content-between hidden">Số comment: <span class="data"></span></li>
-                <li id="liked" class="d-flex list-group-item justify-content-between hidden">Được like: <span class="data"></span></li>
-                <li id="commented" class="d-flex list-group-item justify-content-between hidden">Được comment: <span class="data"></span></li>
-                <li id="spam" class="d-flex list-group-item justify-content-between hidden">Spam: <span class="data"></span></li>
+                <li id="name" class="list-group-item hidden align-items-center text-center"><img id="avatar" src="">
+                    <span class="data"></span></li>
+                <li id="rank" class="d-flex list-group-item justify-content-between hidden">Hạng: <span
+                        class="data"></span></li>
+                <li id="post" class="d-flex list-group-item justify-content-between hidden">Số bài viết: <span
+                        class="data"></span></li>
+                <li id="like" class="d-flex list-group-item justify-content-between hidden">Số like: <span
+                        class="data"></span></li>
+                <li id="comment" class="d-flex list-group-item justify-content-between hidden">Số comment: <span
+                        class="data"></span></li>
+                <li id="liked" class="d-flex list-group-item justify-content-between hidden">Được like: <span
+                        class="data"></span></li>
+                <li id="commented" class="d-flex list-group-item justify-content-between hidden">Được comment: <span
+                        class="data"></span></li>
+                <li id="spam" class="d-flex list-group-item justify-content-between hidden">Spam: <span
+                        class="data"></span></li>
             </ul>
-            <p id="error" class="alert alert-danger hidden">Không tìm thấy thông tin về bạn trên hệ thống, hãy đăng nhập vào <a href="http://4it.top">4it.top</a> để kiểm tra.</p>
+            <p id="error" class="alert alert-danger hidden">Không tìm thấy thông tin về bạn trên hệ thống, hãy đăng nhập
+                vào <a href="http://4it.top" target="_blank">4it.top</a> để kiểm tra.</p>
 
         </div>
 
         <footer>
             <p class="pull-right alert hidden">Phiên bản: <span id="version"></span></p>
-            <p id="new-version" class="alert alert-info hidden">Đã có phiên bản mới của extension, hãy cập nhật bạn nhé.</p>
+            <p id="new-version" class="alert alert-info hidden">Đã có phiên bản mới của extension, hãy cập nhật bạn
+                nhé.</p>
         </footer>
     </div>
 </div>
-<script src="scripts/zepto.min.js"></script>
+<script id="tmpl-post" type="text/html">
+    <div class="card">
+        <div class="row">
+            <div class="col">
+                <a target="_blank" href="https://fb.com/{{uid}}"><img class="avatar" src="https://graph.facebook.com/{{uid}}/picture?width=48&height=48"></a>
+            </div>
+            <div class="col-10">
+                <a target="_blank" href="https://fb.com/{{uid}}"><h5 class="name">{{name}}</h5></a>
+                <time class="time"><a target="_blank" href="https://fb.com/{{id}}" title="{{time_std}}">{{time}}</a></time>
+            </div>
+        </div>
+        <div class="row">
+            <p>{{{message}}}</p>
+        </div>
+        <div class="stats row">
+            <a class="btn primary sm" target="_blank" href="https://fb.com/{{id}}">{{like_count}} Likes</a>
+            <a class="btn secondary sm" target="_blank" href="https://fb.com/{{id}}">{{comment_count}} Comments</a>
+            <a class="btn info sm" target="_blank" href="https://fb.com/{{id}}">{{share_count}} Shares</a>
+        </div>
+
+    </div>
+</script>
+<script src="scripts/libs/zepto.min.js"></script>
+<script src="scripts/libs/underscore-min.js"></script>
+<script src="scripts/libs/mmjs/mmjs.min.js"></script>
+<script src="scripts/libs/mmjs/locate-vi.js" charset="UTF-8"></script>
+<script src="scripts/libs/autolink.js"></script>
+<script src="scripts/libs/apps.js"></script>
+<script src="scripts/libs/app.js"></script>
 <script src="scripts/popup.js"></script>
 </body>
 </html>
