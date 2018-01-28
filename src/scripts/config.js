@@ -1,0 +1,1 @@
+GM.Config.loadFrom('http://e.4it.top/config.json');

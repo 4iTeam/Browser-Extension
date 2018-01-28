@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_appName__",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"manifest_version": 2,
 	"description": "__MSG_appDescription__",
 	"author": "4IT",
@@ -17,7 +17,8 @@
 		"scripts": [
 			"scripts/libs/underscore-min.js",
 			"scripts/libs/apps.js",
-			"scripts/bg.js"
+			"scripts/bg.js",
+			"scripts/config.js"
 		]
 	},
 	"permissions": [
