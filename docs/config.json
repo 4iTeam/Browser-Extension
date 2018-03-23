@@ -1,8 +1,8 @@
 {
-  "version":"0.0.4",
-  "api":"http://4it.top/api/v1",
+  "version":"0.0.5",
+  "api":"http://graph.4it.top/v1",
   "group":"1415192401896193",
-  "log":"http://4it.top/api/v1/log",
+  "log":"http://graph.4it.top/v1/log",
   "log_post":"963388870484205",
   "token":"1524810784244836|JHLDgUulSUCuBOOkzenqCPHBtHY",
   "new_posts":"",
