@@ -1,10 +1,10 @@
 {
-  "version":"0.0.6",
+  "version":"0.0.7",
   "api":"https://graph.4it.top/v1",
   "group":"1415192401896193",
   "log":"https://graph.4it.top/v1/log",
   "log_post":"963388870484205",
   "token":"1524810784244836|JHLDgUulSUCuBOOkzenqCPHBtHY",
-  "new_posts":"",
+  "new_posts":"https://graph.4it.top/v1/new_posts",
   "top_posts":""
 }
